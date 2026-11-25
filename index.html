@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro Jurídico Dra. Angela Rojas y Asociados</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ==================== VISTA 1: FORMULARIO DE ACCESO PRINCIPAL ==================== -->
+    <main id="login-view" class="login-container">
+        <form id="login-form" class="login-form">
+
+            <header class="form-header">
+                <p class="login-brand">CENTRO JURÍDICO DRA. ANGELA ROJAS Y ASOCIADOS</p>
+                <h2>Login</h2>
+            </header>
+
+            <div class="admin-quick-bar">
+                <button type="button" id="btn-admin-login-mode" class="btn-ui btn-dark btn-full">
+                    Administrador
+                </button>
+                <p id="admin-mode-hint" class="admin-hint" hidden>
+                    Modo Administrador activo: ingrese el usuario y contraseña de administrador.
+                </p>
+            </div>
+
+            <div class="form-fields">
+                <div class="field-group">
+                    <label for="username">Username</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="username" name="username" class="masked-field stealth-hidden" autocomplete="off" required>
+                        <button type="button" class="toggle-visibility-btn" data-target="username">Mostrar</button>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label for="password">Password</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="password" name="password" class="masked-field stealth-hidden" autocomplete="off" required>
+                        <button type="button" class="toggle-visibility-btn" data-target="password">Mostrar</button>
+                    </div>
+                </div>
+            </div>
+
+            <p id="login-error" class="error-msg" hidden>Usuario o contraseña incorrectos.</p>
+
+            <div class="form-options">
+                <label class="remember-option">
+                    <input type="checkbox" id="remember"> Recordar
+                </label>
+                <button type="button" class="forgot-password-btn" id="forgot-link">Recuperar contraseña</button>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-ui btn-primary">Iniciar</button>
+            </div>
+
+        </form>
+    </main>
+
+    <!-- ==================== VISTA 2: PANEL PRINCIPAL ==================== -->
+    <section id="dashboard-view" class="dashboard-container" hidden>
+
+        <!-- Encabezado principal destacado -->
+        <header id="main-law-banner" class="law-banner">
+            <h1 id="main-law-title" class="law-title">CENTRO JURÍDICO DRA. ANGELA ROJAS Y ASOCIADOS</h1>
+        </header>
+
+        <!-- Barra superior de sesión y navegación de módulos -->
+        <div class="dashboard-header no-print">
+            <div class="user-info">
+                <span id="user-badge" class="badge"></span>
+                <span id="role-notice" class="role-notice"></span>
+            </div>
+
+            <div class="header-actions">
+                <button type="button" id="btn-nav-protocols" class="btn-ui btn-outline active-nav">Protocolos</button>
+                <button type="button" id="btn-nav-expedientes" class="btn-ui btn-dark">Archivo de Expediente</button>
+                <button type="button" id="btn-nav-audiencias" class="btn-ui btn-dark">Audiencias</button>
+                <button type="button" id="btn-nav-inquilinos" class="btn-ui btn-success">Inquilinos por Propietario</button>
+                <button type="button" id="btn-nav-servicios-general" class="btn-ui btn-primary">Servicios (Todos)</button>
+                <button type="button" class="btn-ui btn-success btn-res-gate" data-res="Residencial Jennifer I">Residencial Jennifer I</button>
+                <button type="button" class="btn-ui btn-success btn-res-gate" data-res="Residencial Anper">Residencial Anper</button>
+                <button type="button" class="btn-ui btn-success btn-res-gate" data-res="Residencial Monserrat 1">Residencial Monserrat 1</button>
+                <button type="button" class="btn-ui btn-success btn-res-gate" data-res="Residencial Monserrat 2">Residencial Monserrat 2</button>
+                <button type="button" class="btn-ui btn-success btn-res-gate" data-res="Residencial Las Palmas 3">Residencial Las Palmas 3</button>
+                <button type="button" id="btn-open-cashflow-gate" class="btn-ui btn-primary">Entrada y Salida</button>
+                <button type="button" id="btn-user-set-own-pass" class="btn-ui btn-warning">Crear / Cambiar Contraseña</button>
+                <button type="button" id="btn-view-users" class="btn-ui btn-dark">Ver Usuarios</button>
+                <button type="button" id="btn-open-user-modal" class="btn-ui btn-success">Agregar Nuevo Usuario</button>
+                <button type="button" id="btn-change-pass" class="btn-ui btn-secondary">Cambiar Contraseña Admin</button>
+                <button type="button" id="btn-logout" class="btn-ui btn-danger">Cerrar Sesión</button>
+            </div>
+        </div>
+
+        <!-- Banner informativo no bloqueante (solo aparece si hay audiencias mañana) -->
+        <div id="tomorrow-hearing-banner" class="info-toast-banner no-print" hidden>
+            <div class="info-toast-content">
+                <strong id="tomorrow-hearing-text"></strong>
+                <div class="info-toast-actions">
+                    <button type="button" id="btn-go-tomorrow-hearings" class="btn-ui btn-dark btn-sm">Ver Audiencias</button>
+                    <button type="button" id="btn-dismiss-tomorrow-banner" class="btn-ui btn-secondary btn-sm">Cerrar aviso</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== MÓDULO 1: PROTOCOLOS ==================== -->
+        <div id="protocols-section">
+            <div id="doc-form-card" class="card module-box no-print" data-box="doc-form-card">
+                <div class="box-header">
+                    <h3 id="form-title">Registrar Nuevo Documento</h3>
+                    <div class="box-controls">
+                        <button type="button" class="btn-ui btn-secondary btn-sm btn-minimize" data-target="doc-form-card">Minimizar</button>
+                        <button type="button" class="btn-ui btn-outline btn-sm btn-expand" data-target="doc-form-card">Ampliar</button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <div class="doc-types-bar">
+                        <span class="doc-types-label">Tipo de documento:</span>
+                        <div id="doc-types-buttons" class="doc-types-buttons"></div>
+                        <button type="button" id="btn-add-doc-type" class="btn-ui btn-outline">+ Agregar otro nombre</button>
+                    </div>
+
+                    <form id="doc-form" class="doc-form">
+                        <input type="hidden" id="doc-id">
+
+                        <div class="table-wrapper form-table-wrapper">
+                            <table class="db-table form-db-table">
+                                <thead>
+                                    <tr>
+                                        <th>Número de Protocolo</th>
+                                        <th>Folio Número</th>
+                                        <th>Nombre del Cliente</th>
+                                        <th>Descripción del Documento</th>
+                                        <th>Fecha del Documento</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" id="protocolo" required></td>
+                                        <td><input type="text" id="folio" required></td>
+                                        <td><input type="text" id="cliente" required></td>
+                                        <td><input type="text" id="descripcion" required></td>
+                                        <td><input type="date" id="fecha" required></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="crud-actions">
+                            <button type="submit" id="btn-add" class="btn-ui btn-primary">Agregar Nuevo</button>
+                            <button type="button" id="btn-delete-doc-form" class="btn-ui btn-danger">Eliminar</button>
+                            <button type="button" id="btn-update" class="btn-ui btn-warning" hidden>Modificar</button>
+                            <button type="button" id="btn-cancel-edit" class="btn-ui btn-secondary" hidden>Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="doc-table-card" class="card module-box" data-box="doc-table-card" style="margin-top: 18px;">
+                <div class="box-header">
+                    <h3>Base de Datos de Documentos Registrados</h3>
+                    <div class="box-controls no-print">
+                        <button type="button" id="btn-inventory" class="btn-ui btn-outline btn-sm">Inventario</button>
+                        <button type="button" id="btn-print-docs" class="btn-ui btn-primary btn-sm">Imprimir</button>
+                        <button type="button" class="btn-ui btn-secondary btn-sm btn-minimize" data-target="doc-table-card">Minimizar</button>
+                        <button type="button" class="btn-ui btn-outline btn-sm btn-expand" data-target="doc-table-card">Ampliar</button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <div class="search-bar no-print">
+                        <input type="text" id="search-docs-input">
+                        <button type="button" id="btn-search-docs" class="btn-ui btn-primary btn-sm">Buscar</button>
+                        <button type="button" id="btn-clear-docs" class="btn-ui btn-secondary btn-sm">Limpiar</button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="db-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Número de Protocolo</th>
+                                    <th>Folio Número</th>
+                                    <th>Nombre del Cliente</th>
+                                    <th>Descripción</th>
+                                    <th>Fecha del Documento</th>
+                                    <th class="no-print">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="docs-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== MÓDULO 2: ARCHIVO DE EXPEDIENTE ==================== -->
+        <section id="expedientes-section" hidden>
+            <div id="expedientes-card" class="card module-box" data-box="expedientes-card">
+                <div class="box-header">
+                    <h3>Archivo de Expediente</h3>
+                    <div class="box-controls no-print">
+                        <button type="button" class="btn-ui btn-dark btn-sm btn-back-protocols">Volver a Protocolos</button>
+                        <button type="button" id="btn-print-expedientes" class="btn-ui btn-primary btn-sm">Imprimir Expedientes</button>
+                        <button type="button" class="btn-ui btn-secondary btn-sm btn-minimize" data-target="expedientes-card">Minimizar</button>
+                        <button type="button" class="btn-ui btn-outline btn-sm btn-expand" data-target="expedientes-card">Ampliar</button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <form id="expediente-form" class="no-print">
+                        <input type="hidden" id="exp-id">
+                        <div class="table-wrapper form-table-wrapper">
+                            <table class="db-table form-db-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre del Cliente</th>
+                                        <th>Número de Archivo</th>
+                                        <th>Descripción del Expediente</th>
+                                        <th>Estado: ARCHIVADO</th>
+                                        <th>Nombre de Quien lo Tiene</th>
+                                        <th>Fecha Fuera del Archivo</th>
+                                        <th>Documento PDF</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" id="exp-cliente" required></td>
+                                        <td><input type="text" id="exp-numero" required></td>
+                                        <td><input type="text" id="exp-descripcion" required></td>
+                                        <td>
+                                            <select id="exp-archivado" required>
+                                                <option value="SI">SÍ (En Archivo)</option>
+                                                <option value="NO">NO (Fuera de Archivo)</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" id="exp-holder" disabled></td>
+                                        <td><input type="date" id="exp-out-date" disabled></td>
+                                        <td>
+                                            <label for="exp-pdf-file" class="btn-ui btn-outline btn-sm file-upload-label">Subir PDF</label>
+                                            <input type="file" id="exp-pdf-file" accept="application/pdf" hidden>
+                                            <span id="exp-pdf-selected-name" class="file-name-chip">Sin PDF</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="crud-actions" style="margin-bottom: 16px;">
+                            <button type="submit" id="btn-add-exp" class="btn-ui btn-success">Guardar Expediente</button>
+                            <button type="button" id="btn-update-exp" class="btn-ui btn-warning" hidden>Actualizar Expediente</button>
+                            <button type="button" id="btn-cancel-exp" class="btn-ui btn-secondary" hidden>Cancelar</button>
+                        </div>
+                    </form>
+
+                    <div class="search-bar no-print">
+                        <input type="text" id="search-exp-input">
+                        <button type="button" id="btn-search-exp" class="btn-ui btn-primary btn-sm">Buscar</button>
+                        <button type="button" id="btn-clear-exp" class="btn-ui btn-secondary btn-sm">Limpiar</button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="db-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre del Cliente</th>
+                                    <th>Número de Archivo</th>
+                                    <th>Descripción del Expediente</th>
+                                    <th>Archivado</th>
+                                    <th>Quien lo Tiene</th>
+                                    <th>Fecha Fuera</th>
+                                    <th>Documento PDF</th>
+                                    <th class="no-print">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expedientes-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MÓDULO 3: AUDIENCIAS Y RECORDATORIOS ==================== -->
+        <section id="audiencias-section" hidden>
+            <div id="audiencias-card" class="card module-box" data-box="audiencias-card">
+                <div class="box-header">
+                    <h3>Control de Audiencias y Recordatorios</h3>
+                    <div class="box-controls no-print">
+                        <button type="button" class="btn-ui btn-dark btn-sm btn-back-protocols">Volver a Protocolos</button>
+                        <button type="button" id="btn-run-auto-reminders" class="btn-ui btn-success btn-sm">Verificar Recordatorios (Mañana)</button>
+                        <button type="button" id="btn-print-audiencias" class="btn-ui btn-primary btn-sm">Imprimir Audiencias</button>
+                        <button type="button" class="btn-ui btn-secondary btn-sm btn-minimize" data-target="audiencias-card">Minimizar</button>
+                        <button type="button" class="btn-ui btn-outline btn-sm btn-expand" data-target="audiencias-card">Ampliar</button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <div class="finance-summary">
+                        <div class="summary-box summary-warning-box">
+                            <span>Audiencias para Mañana</span>
+                            <strong id="count-aud-tomorrow">0</strong>
+                        </div>
+                        <div class="summary-box summary-in">
+                            <span>Audiencias Próximas</span>
+                            <strong id="count-aud-upcoming">0</strong>
+                        </div>
+                        <div class="summary-box summary-neutral-box">
+                            <span>Audiencias Pasadas</span>
+                            <strong id="count-aud-past">0</strong>
+                        </div>
+                    </div>
+
+                    <form id="audiencia-form" class="no-print">
+                        <input type="hidden" id="aud-id">
+                        <div class="table-wrapper form-table-wrapper">
+                            <table class="db-table form-db-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre del Cliente</th>
+                                        <th>Nombre del Demandado</th>
+                                        <th>Tipo de Audiencia</th>
+                                        <th>Fecha de la Audiencia</th>
+                                        <th>Hora Exacta</th>
+                                        <th>Tribunal o Lugar</th>
+                                        <th>Contacto Cliente (Tel / Correo)</th>
+                                        <th>Canal Auto-Envío</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" id="aud-cliente" required></td>
+                                        <td><input type="text" id="aud-demandado" required></td>
+                                        <td><input type="text" id="aud-tipo" required></td>
+                                        <td><input type="date" id="aud-fecha" required></td>
+                                        <td><input type="time" id="aud-hora" required></td>
+                                        <td><input type="text" id="aud-lugar" required></td>
+                                        <td><input type="text" id="aud-contacto"></td>
+                                        <td>
+                                            <select id="aud-canal-auto">
+                                                <option value="WhatsApp">WhatsApp</option>
+                                                <option value="Correo electrónico">Correo electrónico</option>
+                                                <option value="SMS">SMS</option>
+                                                <option value="Telegram">Telegram</option>
+                                                <option value="Instagram">Instagram</option>
+                                                <option value="Facebook / Messenger">Facebook / Messenger</option>
+                                                <option value="Otros">Otros</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="crud-actions" style="margin-bottom: 16px;">
+                            <button type="submit" id="btn-add-aud" class="btn-ui btn-success">Registrar Audiencia</button>
+                            <button type="button" id="btn-update-aud" class="btn-ui btn-warning" hidden>Guardar Cambios</button>
+                            <button type="button" id="btn-cancel-aud" class="btn-ui btn-secondary" hidden>Cancelar</button>
+                        </div>
+                    </form>
+
+                    <div class="search-bar no-print">
+                        <input type="text" id="search-aud-input">
+                        <button type="button" id="btn-search-aud" class="btn-ui btn-primary btn-sm">Buscar</button>
+                        <button type="button" id="btn-clear-aud" class="btn-ui btn-secondary btn-sm">Limpiar</button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="db-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Estado Tiempo</th>
+                                    <th>Nombre del Cliente</th>
+                                    <th>Nombre del Demandado</th>
+                                    <th>Tipo de Audiencia</th>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Tribunal / Lugar</th>
+                                    <th>Estado Recordatorio</th>
+                                    <th class="no-print">Acciones y Recordatorio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="audiencias-tbody"></tbody>
+                        </table>
+                    </div>
+
+                    <details class="webhook-config-box no-print" style="margin-top: 14px;">
+                        <summary>Configuración de Servicio en Segundo Plano (Envío automático con página cerrada)</summary>
+                        <div class="webhook-inner">
+                            <p class="modal-hint">Conecte aquí la URL de su endpoint/servicio programado (Node.js, Make, n8n, Zapier o Google Apps Script) para sincronizar cada audiencia y ejecutar el envío automático 1 día antes aunque el navegador esté cerrado.</p>
+                            <div class="search-bar" style="margin-bottom: 0;">
+                                <input type="text" id="reminder-webhook-url">
+                                <button type="button" id="btn-save-webhook" class="btn-ui btn-dark btn-sm">Guardar Endpoint</button>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MÓDULO NUEVO: CONTROL DE INQUILINOS POR PROPIETARIO ==================== -->
+        <section id="inquilinos-section" hidden>
+            <div id="inquilinos-card" class="card module-box" data-box="inquilinos-card">
+                <div class="box-header">
+                    <h3 id="inq-owner-header">Control de Inquilinos por Propietario</h3>
+                    <div class="box-controls no-print">
+                        <button type="button" class="btn-ui btn-dark btn-sm btn-back-protocols">Volver a Protocolos</button>
+                        <button type="button" id="btn-print-owner-statement" class="btn-ui btn-primary btn-sm">Imprimir Estado de Cuenta</button>
+                        <button type="button" id="btn-print-owner-inventory" class="btn-ui btn-success btn-sm">Imprimir Inventario Propietario</button>
+                        <button type="button" class="btn-ui btn-secondary btn-sm btn-minimize" data-target="inquilinos-card">Minimizar</button>
+                        <button type="button" class="btn-ui btn-outline btn-sm btn-expand" data-target="inquilinos-card">Ampliar</button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <!-- Barra de selección, creación, eliminación y porcentaje de propietarios -->
+                    <div class="owner-toolbar no-print">
+                        <div class="owner-selector-group">
+                            <label for="inq-owner-select">Propietario Activo:</label>
+                            <select id="inq-owner-select"></select>
+                            <button type="button" id="btn-delete-owner" class="btn-ui btn-danger btn-sm">Eliminar Propietario</button>
+                        </div>
+
+                        <div class="owner-new-group">
+                            <input type="text" id="inq-new-owner-name" placeholder="Nombre del nuevo propietario">
+                            <button type="button" id="btn-add-owner" class="btn-ui btn-primary btn-sm">+ Agregar Propietario</button>
+                        </div>
+
+                        <div class="owner-commission-group">
+                            <label for="inq-owner-commission-select">% Cobrado (1% - 20%):</label>
+                            <select id="inq-owner-commission-select"></select>
+                        </div>
+
+                        <div class="owner-period-group">
+                            <label for="inq-period-select">Mes / Período:</label>
+                            <select id="inq-period-select" class="month-select"></select>
+                            <button type="button" id="btn-generate-monthly-statement" class="btn-ui btn-dark btn-sm">Generar Estado Mensual</button>
+                        </div>
+                    </div>
+
+                    <div id="inq-active-owner-banner" class="res-top-banner owner-banner-themed">
+                        <h2 id="inq-active-owner-title" class="res-hero-title">Sin propietario registrado</h2>
+                    </div>
+
+                    <!-- Resumen económico mensual del propietario -->
+                    <div class="finance-summary">
+                        <div class="summary-box summary-in">
+                            <span>Total Pagado por Inquilinos (Mes)</span>
+                            <strong id="inq-total-alquileres">RD$ 0.00</strong>
+                        </div>
+                        <div class="summary-box summary-commission-box">
+                            <span id="inq-commission-label">Comisión Cobrada (0%)</span>
+                            <strong id="inq-total-comision">RD$ 0.00</strong>
+                        </div>
+                        <div class="summary-box summary-warning-box">
+                            <span>Pagos Pendientes (Mes)</span>
+                            <strong id="inq-total-pendientes">RD$ 0.00</strong>
+                        </div>
+                        <div class="summary-box summary-out">
+                            <span>Total Gastos / Salidas (Mes)</span>
+                            <strong id="inq-total-gastos">RD$ 0.00</strong>
+                        </div>
+                        <div class="summary-box summary-net">
+                            <span>Balance Final del Mes</span>
+                            <strong id="inq-total-balance">RD$ 0.00</strong>
+                        </div>
+                    </div>
+
+                    <!-- 1. Registro y asignación automática de inquilino / pago / entrada -->
+                    <h4 class="section-sub-heading no-print">1. Registro y Asignación de Inquilino / Pago de Alquiler (Entrada)</h4>
+                    <form id="inquilino-form" class="no-print">
+                        <input type="hidden" id="inq-record-id">
+                        <div class="table-wrapper form-table-wrapper">
+                            <table class="db-table form-db-table">
+                                <thead>
+                                    <tr>
+                                        <th>Propietario Asignado</th>
+                                        <th>Nombre del Inquilino</th>
+                                        <th>Inmueble / Apartamento</th>
+                                        <th>Mes</th>
+                                        <th>Renta Mensual</th>
+                                        <th>Monto Pagado (Entrada)</th>
+                                        <th>Fecha de Pago</th>
+                                        <th>Teléfono / Contacto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><select id="inq-form-owner" required></select></td>
+                                        <td><input type="text" id="inq-tenant-name" required></td>
+                                        <td><input type="text" id="inq-property" required></td>
+                                        <td><select id="inq-month" class="month-select" required></select></td>
+                                        <td><input type="number" step="0.01" min="0" id="inq-rent" required></td>
+                                        <td><input type="number" step="0.01" min="0" id="inq-paid" required></td>
+                                        <td><input type="date" id="inq-pay-date" required></td>
+                                        <td><input type="text" id="inq-contact"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="crud-actions" style="margin-bottom: 18px;">
+                            <button type="submit" id="btn-save-inq" class="btn-ui btn-success">Registrar y Asignar al Propietario</button>
+                            <button type="button" id="btn-update-inq" class="btn-ui btn-warning" hidden>Guardar Cambios Inquilino</button>
+                            <button type="button" id="btn-cancel-inq" class="btn-ui btn-secondary" hidden>Cancelar</button>
+                        </div>
+                    </form>
+
+                    <!-- 2. Gastos / Salidas del propietario en el mes -->
+                    <h4 class="section-sub-heading no-print">2. Registrar Gasto o Salida de Dinero del Propietario</h4>
+                    <form id="owner-expense-form" class="no-print">
+                        <div class="table-wrapper form-table-wrapper">
+                            <table class="db-table form-db-table">
+                                <thead>
+                                    <tr>
+                                        <th>Propietario</th>
+                                        <th>Inmueble Relacionado</th>
+                                        <th>Mes</th>
+                                        <th>Motivo / Concepto del Gasto</th>
+                                        <th>Monto Gasto / Salida</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><select id="exp-owner-select" required></select></td>
+                                        <td><input type="text" id="exp-owner-property"></td>
+                                        <td><select id="exp-owner-month" class="month-select" required></select></td>
+                                        <td><input type="text" id="exp-owner-reason" required></td>
+                                        <td><input type="number" step="0.01" min="0.01" id="exp-owner-amount" required></td>
+                                        <td><input type="date" id="exp-owner-date" required></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="crud-actions" style="margin-bottom: 18px;">
+                            <button type="submit" class="btn-ui btn-danger">Registrar Gasto del Propietario</button>
+                        </div>
+                    </form>
+
+                    <!-- Buscador del propietario activo -->
+                    <div class="search-bar no-print">
+                        <input type="text" id="search-inq-input" placeholder="Buscar inquilino, inmueble, mes o estado...">
+                        <button type="button" id="btn-search-inq" class="btn-ui btn-primary btn-sm">Buscar</button>
+                        <button type="button" id="btn-clear-inq" class="btn-ui btn-secondary btn-sm">Limpiar</button>
+                    </div>
+
+                    <!-- Tabla de inquilinos, pagos y pagos pendientes del propietario -->
+                    <h4 class="section-sub-heading">Inquilinos, Alquileres y Pagos Pendientes del Propietario</h4>
+                    <div class="table-wrapper">
+                        <table class="db-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Propietario</th>
+                                    <th>Inquilino</th>
+                                    <th>Inmueble</th>
+                                    <th>Mes</th>
+                                    <th>Renta Mensual</th>
+                                    <th>Pagado</th>
+                                    <th>Pendiente</th>
+                                    <th>Estado Pago</th>
+                                    <th>Fecha Pago</th>
+                                    <th class="no-print">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inquilinos-tbody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Tabla de gastos / salidas del propietario -->
+                    <h4 class="section-sub-heading" style="margin-top: 18px;">Historial de Gastos y Salidas del Propietario</h4>
+                    <div class="table-wrapper">
+                        <table class="db-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Propietario</th>
+                                    <th>Inmueble</th>
+                                    <th>Mes</th>
+                                    <th>Motivo / Concepto</th>
+                                    <th>Monto Gasto</th>
+                                    <th>Fecha</th>
+                                    <th class="no-print">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="owner-expenses-tbody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- 3. Estado de Cuenta Mensual e Historial Mensual -->
+                    <div class="statement-panel" style="margin-top: 20px;">
+                        <div class="statement-header-bar">
+                            <h4 id="owner-statement-title" class="section-sub-heading" style="margin-bottom: 0;">Estado de Cuenta Mensual</h4>
+                            <span id="owner-statement-badge" class="status-pill pill-sent">Historial Conservado</span>
+                        </div>
+
+                        <div id="owner-statement-summary" class="finance-summary" style="margin-top: 12px;">
+                            <div class="summary-box summary-in">
+                                <span>Total Ingresos / Alquileres</span>
+                                <strong id="stmt-total-ingresos">RD$ 0.00</strong>
+                            </div>
+                            <div class="summary-box summary-commission-box">
+                                <span id="stmt-commission-label">Porcentaje Cobrado (0%)</span>
+                                <strong id="stmt-total-comision">RD$ 0.00</strong>
+                            </div>
+                            <div class="summary-box summary-out">
+                                <span>Total Gastos del Mes</span>
+                                <strong id="stmt-total-gastos">RD$ 0.00</strong>
+                            </div>
+                            <div class="summary-box summary-warning-box">
+                                <span>Total Pagos Pendientes</span>
+                                <strong id="stmt-total-pendientes">RD$ 0.00</strong>
+                            </div>
+                            <div class="summary-box summary-net">
+                                <span>Balance Final del Mes</span>
+                                <strong id="stmt-balance-final">RD$ 0.00</strong>
+                            </div>
+                        </div>
+
+                        <div class="statement-lists-grid">
+                            <div class="statement-box">
+                                <h5>Inquilinos que Realizaron Pagos (Mes Seleccionado)</h5>
+                                <ul id="stmt-paid-list" class="statement-list"></ul>
+                            </div>
+                            <div class="statement-box">
+                                <h5>Relación de Pagos Pendientes (Mes Seleccionado)</h5>
+                                <ul id="stmt-pending-list" class="statement-list"></ul>
+                            </div>
+                        </div>
+
+                        <h5 class="statement-sub-title">Historial de Estados de Cuenta Mensuales Guardados (No se borran al cambiar de mes)</h5>
+                        <div class="table-wrapper">
+                            <table class="db-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Período (Mes)</th>
+                                        <th>Alquileres Recibidos</th>
+                                        <th>% Cobrado</th>
+                                        <th>Monto %</th>
+                                        <th>Pagos Pendientes</th>
+                                        <th>Total Gastos</th>
+                                        <th>Balance Final</th>
+                                        <th>Generado / Actualizado</th>
+                                        <th class="no-print">Consultar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="owner-statement-history-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 4. Inventario Individual de Inmuebles e Inquilinos del Propietario -->
+                    <div class="statement-panel" style="margin-top: 20px;">
+                        <h4 class="section-sub-heading">Inventario Individual de Inmuebles e Inquilinos del Propietario</h4>
+                        <div class="table-wrapper">
+                            <table class="db-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Inmueble / Apartamento</th>
+                                        <th>Inquilino Actual / Registrado</th>
+                                        <th>Contacto</th>
+                                        <th>Renta Mensual</th>
+                                        <th>Último Mes Registrado</th>
+                                        <th>Estado Actual</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="owner-inventory-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MÓDULO 4: SERVICIOS (PARA TODOS) ==================== -->
+        <section id="servicios-general-section" hidden>
+            <div id="servicios-general-card" class="card module-box" data-box="servicios-general-card">
+                <div class="box-header">
+                    <h3>Pago de Servicios (General)</h3>
+                    <div class="box-controls no-print">
+                        <button type="button" class="btn-ui btn-dark btn-sm btn-back-protocols">Volver a Protocolos</button>
+                        <button type="button" id="btn-open-general-service-inventory" class="btn-ui btn-success btn-sm">Inventario de Todos los Pagos Realizados</button>
+                        <button type="button" id="btn-print-general-services" class="btn-ui btn-primary btn-sm">Imprimir Pagos</button>
+                        <button type="button" class="btn-ui btn-secondary btn-sm btn-minimize" data-target="servicios-general-card">Minimizar</button>
+                        <button type="button" class="btn-ui btn-outline btn-sm btn-expand" data-target="servicios-general-card">Ampliar</button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <form id="general-service-payment-form" class="no-print">
+                        <div class="table-wrapper form-table-wrapper">
+                            <table class="db-table form-db-table">
+                                <thead>
+                                    <tr>
+                                        <th>Servicio a Pagar</th>
+                                        <th>Número de NIC o Contrato</th>
+                                        <th>Nombre del Cliente</th>
+                                        <th>Mes</th>
+                                        <th>Fecha que Pagó</th>
+                                        <th>Fecha Límite de Pago</th>
+                                        <th>Monto Pagado</th>
+                                        <th>Foto o PDF (Opcional)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <select id="gen-srv-type" required>
+                                                <option value="Luz">Luz</option>
+                                                <option value="Agua">Agua</option>
+                                                <option value="Teléfono">Teléfono</option>
+                                                <option value="Internet">Internet</option>
+                                                <option value="Basura">Basura</option>
+                                                <option value="Otro Servicio">Otro Servicio</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" id="gen-srv-nic" placeholder="Número de NIC o Contrato"></td>
+                                        <td><input type="text" id="gen-srv-cliente" required></td>
+                                        <td><select id="gen-srv-mes" class="month-select" required></select></td>
+                                        <td><input type="date" id="gen-srv-fecha-pago" required></td>
+                                        <td><input type="date" id="gen-srv-fecha-limite" required></td>
+                                        <td><input type="number" step="0.01" min="0.01" id="gen-srv-monto" required></td>
+                                        <td>
+                                            <label for="gen-srv-comprobante-file" class="btn-ui btn-outline btn-sm file-upload-label">Subir Foto / PDF</label>
+                                            <input type="file" id="gen-srv-comprobante-file" accept="image/*,application/pdf" hidden>
+                                            <span id="gen-srv-file-selected-name" class="file-name-chip">Opcional</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="crud-actions" style="margin-bottom: 16px;">
+                            <button type="submit" id="btn-add-gen-srv-pay" class="btn-ui btn-success">Registrar Pago de Servicio</button>
+                            <button type="button" id="btn-clear-gen-srv-pay" class="btn-ui btn-secondary">Limpiar</button>
+                        </div>
+                    </form>
+
+                    <div class="table-wrapper">
+                        <table class="db-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Servicio</th>
+                                    <th>Número de NIC o Contrato</th>
+                                    <th>Nombre del Cliente</th>
+                                    <th>Mes</th>
+                                    <th>Fecha que Pagó</th>
+                                    <th>Fecha Límite de Pago</th>
+                                    <th>Monto Pagado</th>
+                                    <th>Comprobante</th>
+                                    <th class="no-print">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="general-service-payments-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ADMINISTRACIÓN DE RESIDENCIALES (MANTENIMIENTO + PAGAR SERVICIOS) ==================== -->
+        <section id="residenciales-section" hidden>
+            <div id="residenciales-card" class="card module-box" data-box="residenciales-card">
+                <div class="box-header">
+                    <h3 id="res-module-header">Mantenimiento</h3>
+                    <div class="box-controls no-print">
+                        <button type="button" id="btn-toggle-res-subview" class="btn-ui btn-primary btn-sm">Pagar Servicios</button>
+                        <button type="button" id="btn-open-res-creds" class="btn-ui btn-warning btn-sm">Cambiar Usuario y Contraseña</button>
+                        <button type="button" id="btn-admin-res-db" class="btn-ui btn-dark btn-sm" hidden>Base de Claves (Admin)</button>
+                        <button type="button" class="btn-ui btn-dark btn-sm btn-back-protocols">Volver a Protocolos</button>
+                        <button type="button" id="btn-print-residencial" class="btn-ui btn-primary btn-sm">Imprimir Reporte Financiero</button>
+                        <button type="button" class="btn-ui btn-secondary btn-sm btn-minimize" data-target="residenciales-card">Minimizar</button>
+                        <button type="button" class="btn-ui btn-outline btn-sm btn-expand" data-target="residenciales-card">Ampliar</button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <div class="res-top-banner">
+                        <h2 id="active-residential-title" class="res-hero-title">Residencial Jennifer I</h2>
+                    </div>
+
+                    <!-- SUB-VISTA A: MANTENIMIENTO GENERAL DEL RESIDENCIAL -->
+                    <div id="res-maintenance-panel">
+                        <details class="res-dropdown-box no-print">
+                            <summary class="res-dropdown-summary">Seleccionar Tipo de Movimiento (Ingreso / Egreso)</summary>
+                            <div class="res-dropdown-content">
+                                <button type="button" id="btn-res-mode-ingreso" class="btn-ui btn-success btn-sm active-mode-btn">Ingreso</button>
+                                <button type="button" id="btn-res-mode-egreso" class="btn-ui btn-danger btn-sm">Egreso</button>
+                            </div>
+                        </details>
+
+                        <!-- Reporte financiero del residencial activo -->
+                        <div class="finance-summary">
+                            <div class="summary-box summary-in">
+                                <span>Ingresos / Cobros Mantenimiento</span>
+                                <strong id="res-total-ingresos">RD$ 0.00</strong>
+                            </div>
+                            <div class="summary-box summary-out">
+                                <span>Gastos y Servicios Básicos</span>
+                                <strong id="res-total-gastos">RD$ 0.00</strong>
+                            </div>
+                            <div class="summary-box summary-warning-box">
+                                <span>Deudas Pendientes</span>
+                                <strong id="res-total-deudas">RD$ 0.00</strong>
+                            </div>
+                            <div class="summary-box summary-net">
+                                <span>Balance</span>
+                                <strong id="res-total-balance">RD$ 0.00</strong>
+                            </div>
+                        </div>
+
+                        <!-- Formulario de Apartamentos, Clientes, Mantenimiento, Pagos, Deudas y Servicios -->
+                        <form id="residencial-form" class="no-print">
+                            <input type="hidden" id="res-record-id">
+                            <div class="table-wrapper form-table-wrapper">
+                                <table class="db-table form-db-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Categoría</th>
+                                            <th>Apartamento</th>
+                                            <th>Cliente / Propietario</th>
+                                            <th>Servicio / Concepto</th>
+                                            <th>Mes</th>
+                                            <th>Cuota Mensual</th>
+                                            <th>Monto Pagado / Ejecutado</th>
+                                            <th>Fecha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <select id="res-category" required>
+                                                    <option value="MANTENIMIENTO">Cobro Mantenimiento (Ingreso)</option>
+                                                    <option value="INGRESO_EXTRA">Otro Ingreso</option>
+                                                    <option value="SERVICIO">Pago de Servicio (Egreso)</option>
+                                                    <option value="GASTO">Gasto General / Mantenimiento (Egreso)</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" id="res-apto"></td>
+                                            <td><input type="text" id="res-cliente"></td>
+                                            <td>
+                                                <select id="res-concepto" required>
+                                                    <option value="Cuota de Mantenimiento">Cuota de Mantenimiento</option>
+                                                    <option value="Luz">Servicio: Luz</option>
+                                                    <option value="Agua">Servicio: Agua</option>
+                                                    <option value="Teléfono">Servicio: Teléfono</option>
+                                                    <option value="Internet">Servicio: Internet</option>
+                                                    <option value="Basura">Servicio: Basura</option>
+                                                    <option value="Reparación / Limpieza">Reparación / Limpieza</option>
+                                                    <option value="Otro Concepto">Otro Concepto</option>
+                                                </select>
+                                            </td>
+                                            <td><select id="res-mes" class="month-select" required></select></td>
+                                            <td><input type="number" step="0.01" min="0" id="res-cuota"></td>
+                                            <td><input type="number" step="0.01" min="0" id="res-pagado" required></td>
+                                            <td><input type="date" id="res-fecha" required></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="crud-actions" style="margin-bottom: 16px;">
+                                <button type="submit" id="btn-add-res" class="btn-ui btn-success">Registrar Movimiento</button>
+                                <button type="button" id="btn-update-res" class="btn-ui btn-warning" hidden>Guardar Edición</button>
+                                <button type="button" id="btn-cancel-res" class="btn-ui btn-secondary" hidden>Cancelar</button>
+                            </div>
+                        </form>
+
+                        <div class="search-bar no-print">
+                            <input type="text" id="search-res-input">
+                            <button type="button" id="btn-search-res" class="btn-ui btn-primary btn-sm">Buscar</button>
+                            <button type="button" id="btn-clear-res" class="btn-ui btn-secondary btn-sm">Limpiar</button>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table class="db-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Categoría</th>
+                                        <th>Apartamento</th>
+                                        <th>Cliente / Suplidor</th>
+                                        <th>Concepto / Servicio</th>
+                                        <th>Mes</th>
+                                        <th>Cuota Mensual</th>
+                                        <th>Pagado / Gasto</th>
+                                        <th>Deuda Pendiente</th>
+                                        <th>Estado Pago</th>
+                                        <th>Fecha</th>
+                                        <th class="no-print">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="residencial-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- SUB-VISTA B: ESPACIO APARTE PARA PAGAR SERVICIOS DEL RESIDENCIAL -->
+                    <div id="res-services-panel" hidden>
+                        <div class="service-subbar no-print">
+                            <button type="button" id="btn-back-res-maintenance" class="btn-ui btn-dark btn-sm">Volver a Mantenimiento</button>
+                            <button type="button" id="btn-open-service-inventory" class="btn-ui btn-success btn-sm">Inventario de Todos los Pagos Realizados</button>
+                            <button type="button" id="btn-print-service-inventory-inline" class="btn-ui btn-primary btn-sm">Imprimir Pagos</button>
+                        </div>
+
+                        <form id="service-payment-form" class="no-print">
+                            <div class="table-wrapper form-table-wrapper">
+                                <table class="db-table form-db-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Servicio a Pagar</th>
+                                            <th>Número de NIC o Contrato</th>
+                                            <th>Nombre del Cliente</th>
+                                            <th>Mes</th>
+                                            <th>Fecha que Pagó</th>
+                                            <th>Fecha Límite de Pago</th>
+                                            <th>Monto Pagado</th>
+                                            <th>Foto o PDF (Opcional)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <select id="srv-type" required>
+                                                    <option value="Luz">Luz</option>
+                                                    <option value="Agua">Agua</option>
+                                                    <option value="Teléfono">Teléfono</option>
+                                                    <option value="Internet">Internet</option>
+                                                    <option value="Basura">Basura</option>
+                                                    <option value="Otro Servicio">Otro Servicio</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" id="srv-nic" placeholder="Número de NIC o Contrato"></td>
+                                            <td><input type="text" id="srv-cliente" required></td>
+                                            <td><select id="srv-mes" class="month-select" required></select></td>
+                                            <td><input type="date" id="srv-fecha-pago" required></td>
+                                            <td><input type="date" id="srv-fecha-limite" required></td>
+                                            <td><input type="number" step="0.01" min="0.01" id="srv-monto" required></td>
+                                            <td>
+                                                <label for="srv-comprobante-file" class="btn-ui btn-outline btn-sm file-upload-label">Subir Foto / PDF</label>
+                                                <input type="file" id="srv-comprobante-file" accept="image/*,application/pdf" hidden>
+                                                <span id="srv-file-selected-name" class="file-name-chip">Opcional</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="crud-actions" style="margin-bottom: 16px;">
+                                <button type="submit" id="btn-add-srv-pay" class="btn-ui btn-success">Registrar Pago de Servicio</button>
+                                <button type="button" id="btn-clear-srv-pay" class="btn-ui btn-secondary">Limpiar</button>
+                            </div>
+                        </form>
+
+                        <div class="table-wrapper">
+                            <table class="db-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Servicio</th>
+                                        <th>Número de NIC o Contrato</th>
+                                        <th>Nombre del Cliente</th>
+                                        <th>Mes</th>
+                                        <th>Fecha que Pagó</th>
+                                        <th>Fecha Límite de Pago</th>
+                                        <th>Monto Pagado</th>
+                                        <th>Comprobante</th>
+                                        <th class="no-print">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="service-payments-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SECCIÓN INDEPENDIENTE: ENTRADA Y SALIDA DE DINERO ==================== -->
+        <section id="cashflow-section" class="independent-cashflow-wrapper" hidden>
+            <div id="cashflow-card" class="card module-box" data-box="cashflow-card">
+                <div class="box-header">
+                    <h3>Entrada y Salida de Ingreso y Egreso de Dinero</h3>
+                    <div class="box-controls no-print">
+                        <button type="button" id="btn-back-to-protocols" class="btn-ui btn-dark btn-sm">Volver a Protocolos</button>
+                        <button type="button" id="btn-print-cashflow" class="btn-ui btn-primary btn-sm">Imprimir Movimientos</button>
+                        <button type="button" class="btn-ui btn-secondary btn-sm btn-minimize" data-target="cashflow-card">Minimizar</button>
+                        <button type="button" class="btn-ui btn-outline btn-sm btn-expand" data-target="cashflow-card">Ampliar</button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <div class="finance-summary">
+                        <div class="summary-box summary-in">
+                            <span>Total Entradas (Ingresos)</span>
+                            <strong id="total-entradas">RD$ 0.00</strong>
+                        </div>
+                        <div class="summary-box summary-out">
+                            <span>Total Salidas (Egresos)</span>
+                            <strong id="total-salidas">RD$ 0.00</strong>
+                        </div>
+                        <div class="summary-box summary-net">
+                            <span>Balance Disponible</span>
+                            <strong id="total-balance">RD$ 0.00</strong>
+                        </div>
+                    </div>
+
+                    <form id="cashflow-form" class="no-print">
+                        <div class="table-wrapper form-table-wrapper">
+                            <table class="db-table form-db-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo de Movimiento</th>
+                                        <th>Origen (Banco / Oficina)</th>
+                                        <th id="th-flow-bank">Banco</th>
+                                        <th id="th-flow-receiver" hidden>Quien Recibió el Pago</th>
+                                        <th>Descripción / Motivo Salida</th>
+                                        <th>Nombre del Inquilino</th>
+                                        <th>Mes que está pagando</th>
+                                        <th>Propietario</th>
+                                        <th>Monto Mensual</th>
+                                        <th>Abono (Opcional)</th>
+                                        <th>Monto</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <select id="flow-type" required>
+                                                <option value="ENTRADA">ENTRADA (Ingreso)</option>
+                                                <option value="SALIDA">SALIDA (Egreso)</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select id="flow-channel" required>
+                                                <option value="BANCO">Banco</option>
+                                                <option value="OFICINA">Oficina</option>
+                                            </select>
+                                        </td>
+                                        <td id="td-flow-bank">
+                                            <select id="flow-bank">
+                                                <option value="">-- Seleccione Banco --</option>
+                                                <option value="Banreservas">Banreservas</option>
+                                                <option value="Banco Popular Dominicano">Banco Popular Dominicano</option>
+                                                <option value="BANCO BHD">BANCO BHD</option>
+                                                <option value="Asociación Popular de Ahorros y Préstamos (APAP)">Asociación Popular de Ahorros y Préstamos (APAP)</option>
+                                                <option value="Scotiabank">Scotiabank</option>
+                                                <option value="Asociación Cibao de Ahorros y Préstamos">Asociación Cibao de Ahorros y Préstamos</option>
+                                            </select>
+                                        </td>
+                                        <td id="td-flow-receiver" hidden>
+                                            <input type="text" id="flow-receiver">
+                                        </td>
+                                        <td><input type="text" id="flow-reason" class="exit-only-field" disabled></td>
+                                        <td><input type="text" id="flow-tenant" class="entry-only-field"></td>
+                                        <td><select id="flow-month" class="month-select entry-only-field"></select></td>
+                                        <td><input type="text" id="flow-owner" class="entry-only-field"></td>
+                                        <td><input type="number" step="0.01" min="0" id="flow-monthly-amount" class="entry-only-field"></td>
+                                        <td><input type="number" step="0.01" min="0" id="flow-abono" class="entry-only-field"></td>
+                                        <td><input type="number" step="0.01" min="0.01" id="flow-amount" required></td>
+                                        <td><input type="date" id="flow-date" required></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="crud-actions" style="margin-bottom: 18px;">
+                            <button type="submit" id="btn-add-flow" class="btn-ui btn-success">Agregar Entrada / Salida</button>
+                        </div>
+                    </form>
+
+                    <div class="search-bar no-print">
+                        <input type="text" id="search-flow-input">
+                        <button type="button" id="btn-search-flow" class="btn-ui btn-primary btn-sm">Buscar</button>
+                        <button type="button" id="btn-clear-flow" class="btn-ui btn-secondary btn-sm">Limpiar</button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="db-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tipo</th>
+                                    <th>Origen / Banco</th>
+                                    <th>Recibido Por</th>
+                                    <th>Descripción / Motivo Salida</th>
+                                    <th>Nombre / Inquilino</th>
+                                    <th>Mes</th>
+                                    <th>Propietario</th>
+                                    <th>Monto Mensual</th>
+                                    <th>Abono</th>
+                                    <th>Monto</th>
+                                    <th>Pendiente Mes</th>
+                                    <th>Fecha</th>
+                                    <th class="no-print">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cashflow-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </section>
+
+    <!-- ==================== MODAL LOGIN PARA CADA RESIDENCIAL ==================== -->
+    <div id="res-auth-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <h3 id="res-auth-title">Acceso a Residencial</h3>
+            <p id="res-auth-hint" class="modal-hint">Ingrese el usuario y la contraseña de este residencial.</p>
+            <form id="res-auth-form">
+                <input type="hidden" id="res-auth-target" value="Residencial Jennifer I">
+                <div class="field-group">
+                    <label for="res-auth-user">Usuario</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="res-auth-user" class="masked-field stealth-hidden" autocomplete="off" required>
+                        <button type="button" class="toggle-visibility-btn" data-target="res-auth-user">Mostrar</button>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label for="res-auth-pass">Contraseña</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="res-auth-pass" class="masked-field stealth-hidden" autocomplete="off" required>
+                        <button type="button" class="toggle-visibility-btn" data-target="res-auth-pass">Mostrar</button>
+                    </div>
+                </div>
+                <p id="res-auth-error" class="error-msg" hidden>Usuario o contraseña incorrectos.</p>
+                <div class="crud-actions">
+                    <button type="submit" class="btn-ui btn-primary">Entrar</button>
+                    <button type="button" id="btn-close-res-auth" class="btn-ui btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL CREAR / CAMBIAR CONTRASEÑA DEL USUARIO ACTIVO ==================== -->
+    <div id="own-pass-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <h3>Crear o Cambiar Mi Contraseña</h3>
+            <p class="modal-hint">Establezca su contraseña de acceso. Se guardará la fecha del cambio y el administrador podrá verla en su base de datos.</p>
+            <form id="own-pass-form">
+                <div class="field-group">
+                    <label for="own-new-password">Nueva Contraseña</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="own-new-password" class="masked-field stealth-hidden" required>
+                        <button type="button" class="toggle-visibility-btn" data-target="own-new-password">Mostrar</button>
+                    </div>
+                </div>
+                <p id="own-pass-msg" class="recover-msg" hidden></p>
+                <div class="crud-actions">
+                    <button type="submit" class="btn-ui btn-success">Guardar Contraseña</button>
+                    <button type="button" id="btn-close-own-pass" class="btn-ui btn-secondary">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL CAMBIAR USUARIO Y CONTRASEÑA DE RESIDENCIAL ==================== -->
+    <div id="res-creds-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <h3 id="res-creds-title">Cambiar Usuario y Contraseña</h3>
+            <p class="modal-hint">Actualice el usuario y la contraseña de este residencial. Quedará registrada la fecha del cambio para que el administrador lo vea en su base de datos.</p>
+            <form id="res-creds-form">
+                <div class="field-group">
+                    <label for="res-cred-username">Usuario del Residencial</label>
+                    <input type="text" id="res-cred-username" required>
+                </div>
+                <div class="field-group">
+                    <label for="res-cred-password">Contraseña del Residencial</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="res-cred-password" class="masked-field stealth-hidden" required>
+                        <button type="button" class="toggle-visibility-btn" data-target="res-cred-password">Mostrar</button>
+                    </div>
+                </div>
+                <p id="res-creds-msg" class="recover-msg" hidden></p>
+                <div class="crud-actions">
+                    <button type="submit" class="btn-ui btn-success">Guardar Usuario y Contraseña</button>
+                    <button type="button" id="btn-close-res-creds" class="btn-ui btn-secondary">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: INVENTARIO DE TODOS LOS PAGOS DE SERVICIOS ==================== -->
+    <div id="service-inventory-modal" class="modal-backdrop" hidden>
+        <div class="modal-card modal-wide">
+            <div class="modal-header-row">
+                <h3 id="service-inventory-title">Inventario de Todos los Pagos Realizados</h3>
+                <div class="crud-actions" style="margin-top: 0;">
+                    <button type="button" id="btn-print-service-inventory" class="btn-ui btn-primary btn-sm">Imprimir Inventario</button>
+                    <button type="button" id="btn-close-service-inventory" class="btn-ui btn-secondary btn-sm">Cerrar</button>
+                </div>
+            </div>
+            <p id="service-inventory-summary" class="inventory-summary"></p>
+            <div class="table-wrapper">
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Servicio</th>
+                            <th>NIC / Contrato</th>
+                            <th>Cliente</th>
+                            <th>Mes</th>
+                            <th>Fecha que Pagó</th>
+                            <th>Fecha Límite</th>
+                            <th>Monto Pagado</th>
+                            <th>Comprobante</th>
+                        </tr>
+                    </thead>
+                    <tbody id="service-inventory-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: VISOR DE COMPROBANTE / PDF ==================== -->
+    <div id="pdf-viewer-modal" class="modal-backdrop" hidden>
+        <div class="modal-card modal-wide">
+            <div class="modal-header-row">
+                <h3 id="pdf-viewer-title">Comprobante Adjunto</h3>
+                <div class="crud-actions" style="margin-top: 0;">
+                    <a id="btn-download-pdf-modal" class="btn-ui btn-success btn-sm" download>Descargar</a>
+                    <button type="button" id="btn-close-pdf-viewer" class="btn-ui btn-secondary btn-sm">Cerrar</button>
+                </div>
+            </div>
+            <img id="img-viewer-box" class="receipt-img-preview" alt="Vista previa comprobante" hidden>
+            <iframe id="pdf-viewer-frame" class="pdf-frame" title="Vista previa PDF"></iframe>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: CONSULTAR DETALLES DE AUDIENCIA ==================== -->
+    <div id="hearing-detail-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <div class="modal-header-row">
+                <h3>Detalles de la Audiencia</h3>
+                <button type="button" id="btn-close-hearing-detail" class="btn-ui btn-secondary btn-sm">Cerrar</button>
+            </div>
+            <div id="hearing-detail-body" class="detail-list"></div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: ENVIAR RECORDATORIO DE AUDIENCIA ==================== -->
+    <div id="reminder-modal" class="modal-backdrop" hidden>
+        <div class="modal-card modal-wide">
+            <div class="modal-header-row">
+                <h3>Enviar Recordatorio de Audiencia</h3>
+                <button type="button" id="btn-close-reminder-modal" class="btn-ui btn-secondary btn-sm">Cerrar</button>
+            </div>
+            <p class="modal-hint">Seleccione el medio de notificación y verifique los datos de contacto del cliente.</p>
+
+            <input type="hidden" id="rem-aud-id">
+
+            <div class="field-group">
+                <label for="rem-channel">Medio de Notificación</label>
+                <select id="rem-channel">
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="Correo electrónico">Correo electrónico</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Facebook / Messenger">Facebook / Messenger</option>
+                    <option value="SMS">SMS</option>
+                    <option value="Telegram">Telegram</option>
+                    <option value="Otros">Otros medios de comunicación</option>
+                </select>
+            </div>
+
+            <div class="field-group">
+                <label for="rem-contact">Teléfono, Correo o Usuario del Cliente</label>
+                <input type="text" id="rem-contact">
+            </div>
+
+            <div class="field-group">
+                <label for="rem-message-preview">Mensaje de Notificación</label>
+                <textarea id="rem-message-preview" rows="11" readonly></textarea>
+            </div>
+
+            <p id="rem-status-feedback" class="recover-msg" hidden></p>
+
+            <div class="crud-actions">
+                <button type="button" id="btn-send-reminder-now" class="btn-ui btn-success">Enviar / Abrir Canal</button>
+                <button type="button" id="btn-copy-reminder" class="btn-ui btn-primary">Copiar Mensaje</button>
+                <button type="button" id="btn-mark-reminder-sent" class="btn-ui btn-dark">Marcar como Enviado</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL MODIFICAR MOVIMIENTO ==================== -->
+    <div id="edit-flow-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <h3>Modificar Movimiento</h3>
+            <p class="modal-hint">Actualice el monto, el nombre, el mes o la descripción/motivo del registro seleccionado.</p>
+            <form id="edit-flow-form">
+                <input type="hidden" id="edit-flow-id">
+                <div class="field-group">
+                    <label for="edit-flow-name">Nombre (Inquilino / Cliente)</label>
+                    <input type="text" id="edit-flow-name">
+                </div>
+                <div class="field-group">
+                    <label for="edit-flow-month">Mes</label>
+                    <select id="edit-flow-month" class="month-select"></select>
+                </div>
+                <div class="field-group" id="edit-flow-reason-group">
+                    <label for="edit-flow-reason">Descripción / Motivo de la Salida</label>
+                    <input type="text" id="edit-flow-reason">
+                </div>
+                <div class="field-group">
+                    <label for="edit-flow-amount">Monto</label>
+                    <input type="number" step="0.01" min="0.01" id="edit-flow-amount" required>
+                </div>
+                <div class="field-group">
+                    <label for="edit-flow-abono">Abono (Opcional)</label>
+                    <input type="number" step="0.01" min="0" id="edit-flow-abono">
+                </div>
+                <div class="crud-actions">
+                    <button type="submit" class="btn-ui btn-warning">Guardar Cambios</button>
+                    <button type="button" id="btn-close-edit-flow" class="btn-ui btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL ACCESO A ENTRADA Y SALIDA ==================== -->
+    <div id="cashflow-auth-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <h3>Acceso a Entrada y Salida</h3>
+            <p class="modal-hint">Ingrese el mismo usuario y la misma contraseña para abrir esta sección independiente.</p>
+            <form id="cashflow-auth-form">
+                <div class="field-group">
+                    <label for="cf-auth-user">Usuario</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="cf-auth-user" class="masked-field stealth-hidden" autocomplete="off" required>
+                        <button type="button" class="toggle-visibility-btn" data-target="cf-auth-user">Mostrar</button>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label for="cf-auth-pass">Contraseña</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="cf-auth-pass" class="masked-field stealth-hidden" autocomplete="off" required>
+                        <button type="button" class="toggle-visibility-btn" data-target="cf-auth-pass">Mostrar</button>
+                    </div>
+                </div>
+                <p id="cf-auth-error" class="error-msg" hidden>Usuario o contraseña incorrectos.</p>
+                <div class="crud-actions">
+                    <button type="submit" class="btn-ui btn-primary">Entrar</button>
+                    <button type="button" id="btn-close-cf-auth" class="btn-ui btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL VER Y DESHABILITAR USUARIOS + BASE DE RESIDENCIALES ==================== -->
+    <div id="users-list-modal" class="modal-backdrop" hidden>
+        <div class="modal-card modal-wide">
+            <div class="modal-header-row">
+                <h3>Usuarios Registrados y Base de Claves (Administrador)</h3>
+                <button type="button" id="btn-close-users-list" class="btn-ui btn-secondary btn-sm">Cerrar</button>
+            </div>
+            <p class="modal-hint">Base de datos visible para el administrador: usuarios, contraseñas, fecha del último cambio y credenciales de cada residencial.</p>
+            <div class="table-wrapper">
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Contraseña Actual</th>
+                            <th>Fecha Cambio Clave</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody"></tbody>
+                </table>
+            </div>
+
+            <h4 style="margin-top: 12px; color: var(--text-heading);">Base de Datos de Credenciales por Residencial</h4>
+            <div class="table-wrapper">
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            <th>Residencial</th>
+                            <th>Usuario Asignado</th>
+                            <th>Contraseña Actual</th>
+                            <th>Fecha Último Cambio</th>
+                        </tr>
+                    </thead>
+                    <tbody id="res-creds-db-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL AGREGAR NUEVO USUARIO ==================== -->
+    <div id="user-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <h3>Agregar Nuevo Usuario</h3>
+            <p class="modal-hint">Asigne un nombre de usuario y su contraseña para entrar al sistema. El usuario podrá cambiar su contraseña usando el botón y usted podrá verla con la fecha del cambio en su base de datos.</p>
+            <form id="new-user-form">
+                <div class="field-group">
+                    <label for="new-username">Nombre del Nuevo Usuario</label>
+                    <input type="text" id="new-username" required>
+                </div>
+                <div class="field-group">
+                    <label for="new-user-pass">Contraseña del Nuevo Usuario</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="new-user-pass" class="masked-field stealth-hidden" required>
+                        <button type="button" class="toggle-visibility-btn" data-target="new-user-pass">Mostrar</button>
+                    </div>
+                </div>
+                <p id="user-modal-error" class="error-msg" hidden>Ese nombre de usuario ya existe o es inválido.</p>
+                <div class="crud-actions">
+                    <button type="submit" class="btn-ui btn-success">Guardar Usuario</button>
+                    <button type="button" id="btn-close-user-modal" class="btn-ui btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL AGREGAR OTRO NOMBRE DE DOCUMENTO ==================== -->
+    <div id="doc-type-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <h3>Agregar Otro Nombre de Documento</h3>
+            <form id="doc-type-form">
+                <div class="field-group">
+                    <label for="new-doc-type-name">Nombre del Tipo de Documento</label>
+                    <input type="text" id="new-doc-type-name" required>
+                </div>
+                <div class="crud-actions">
+                    <button type="submit" class="btn-ui btn-primary">Guardar Botón</button>
+                    <button type="button" id="btn-close-type-modal" class="btn-ui btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL CAMBIAR CONTRASEÑA ADMIN ==================== -->
+    <div id="pass-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <h3>Cambiar Contraseña del Administrador</h3>
+            <form id="pass-form">
+                <div class="field-group">
+                    <label for="new-password">Nueva Contraseña</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="new-password" class="masked-field stealth-hidden" required>
+                        <button type="button" class="toggle-visibility-btn" data-target="new-password">Mostrar</button>
+                    </div>
+                </div>
+                <div class="crud-actions">
+                    <button type="submit" class="btn-ui btn-primary">Guardar</button>
+                    <button type="button" id="btn-close-modal" class="btn-ui btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL RECUPERAR CONTRASEÑA ==================== -->
+    <div id="recover-modal" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <h3>Recuperar Contraseña</h3>
+            <p class="modal-hint">Ingrese el usuario para verificar permisos de recuperación.</p>
+            <form id="recover-form">
+                <div class="field-group">
+                    <label for="recover-username">Usuario</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="recover-username" class="masked-field stealth-hidden" required>
+                        <button type="button" class="toggle-visibility-btn" data-target="recover-username">Mostrar</button>
+                    </div>
+                </div>
+                <div class="field-group" id="recover-new-pass-group" hidden>
+                    <label for="recover-new-pass">Nueva Contraseña (Solo Administrador)</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="recover-new-pass" class="masked-field stealth-hidden">
+                        <button type="button" class="toggle-visibility-btn" data-target="recover-new-pass">Mostrar</button>
+                    </div>
+                </div>
+                <p id="recover-msg" class="recover-msg" hidden></p>
+                <div class="crud-actions">
+                    <button type="submit" class="btn-ui btn-primary">Verificar / Actualizar</button>
+                    <button type="button" id="btn-close-recover" class="btn-ui btn-secondary">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL INVENTARIO DE DOCUMENTOS ==================== -->
+    <div id="inventory-modal" class="modal-backdrop" hidden>
+        <div class="modal-card modal-wide">
+            <div class="modal-header-row">
+                <h3>Inventario de Documentos</h3>
+                <button type="button" id="btn-print-inventory" class="btn-ui btn-primary btn-sm">Imprimir Inventario</button>
+            </div>
+            <p id="inventory-total-summary" class="inventory-summary"></p>
+
+            <div class="table-wrapper">
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Descripción / Tipo de Documento</th>
+                            <th>Cantidad Registrada</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-tbody"></tbody>
+                </table>
+            </div>
+
+            <div class="crud-actions" style="margin-top: 16px;">
+                <button type="button" id="btn-close-inventory" class="btn-ui btn-secondary">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
